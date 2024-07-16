@@ -9,6 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
     <style>
+        /* Gaya untuk layar pemuatan */
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        #loading-screen .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        /* Gaya lainnya */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -199,6 +218,13 @@
     </style>
 </head>
 <body>
+    <!-- Layar pemuatan -->
+    <div id="loading-screen">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <header id="header">
         <img src="images/logo_bijb.png" alt="Logo Bandara">
         <h1 id="judul" style="color: black;">Bandara Kertajati</h1>
@@ -266,13 +292,16 @@
         <h3>KAMI BANGGA MENERBANGKAN PESAWAT</h3>
         <div class="logo-container">
             <div class="logo-item">
-                <img src="images/garuda.png" alt="ATR">
+                <img src="images/Flight_Logo/citilink.png" alt="ATR">
             </div>
             <div class="logo-item">
-                <img src="images/kertajati.png" alt="Airbus Helicopters">
+                <img src="images/Flight_Logo/Images.png" alt="Airbus Helicopters">
             </div>
             <div class="logo-item">
-                <img src="images/embraer_logo.png" alt="Embraer">
+                <img src="images/Flight_Logo/Malaysia.png" alt="Embraer">
+            </div>
+            <div class="logo-item">
+                <img src="images/Flight_Logo/super_air.png" alt="Embraer">
             </div>
         </div>
     </div>
@@ -280,28 +309,25 @@
         <p>&copy; 2023 Bandara Kertajati. All rights reserved.</p>
     </div>
     <script>
-        window.addEventListener('load', function() {
-            gsap.to("body", { opacity: 1, duration: 0.5 });
-            gsap.to("header", { opacity: 1, duration: 2, delay: 0.6 });
-            gsap.to("nav", { opacity: 1, duration: 2, delay: 0.7 });
-            gsap.to(".content", { opacity: 1, duration: 2, delay: 0.8 });
-            gsap.to(".detail-section", { opacity: 1, duration: 2, delay: 1 });
-            gsap.to(".logo-section", { opacity: 1, duration: 2, delay: 1 });
+        gsap.fromTo("body", {opacity: 0}, {opacity: 1, duration: 1});
+        gsap.fromTo("#header", {opacity: 0, y: -50}, {opacity: 1, y: 0, duration: 1, delay: 0});
+        gsap.fromTo("#navbar", {opacity: 0, y: -50}, {opacity: 1, y: 0, duration: 1, delay: 0.7});
+        gsap.fromTo(".content", {opacity: 0, y: 50}, {opacity: 1, y: 0, duration: 1, delay: 1});
+        gsap.fromTo(".detail-section", {opacity: 0, x: -50}, {opacity: 1, x: 0, duration: 1, delay: 1});
+        gsap.fromTo(".logo-section", {opacity: 0, y: 50}, {opacity: 1, y: 0, duration: 1, delay: 1.5});
+
+        window.addEventListener("scroll", function() {
+            var navbar = document.getElementById("navbar");
+            if (window.pageYOffset > 0) {
+                navbar.classList.add("sticky");
+            } else {
+                navbar.classList.remove("sticky");
+            }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    var navbar = document.getElementById('navbar');
-                    if (!entry.isIntersecting) {
-                        navbar.classList.add('sticky');
-                    } else {
-                        navbar.classList.remove('sticky');
-                    }
-                });
-            }, { threshold: 0 });
-
-            observer.observe(document.getElementById('header'));
+        window.addEventListener("load", function() {
+            var loadingScreen = document.getElementById("loading-screen");
+            loadingScreen.style.display = "none";
         });
     </script>
 </body>
